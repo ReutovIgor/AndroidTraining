@@ -24,21 +24,18 @@ public class TaskRepositoryControl{
         return storage.getTaskList();
     }
 
-    public void addTask(String description) {
-        Task newTask = new Task(taskList.size(), description);
-        taskList.add(newTask);
+    public void addTask(Task task) {
+        taskList.add(task);
         saveTaskList();
     }
 
-    public void updateTaskStatus(int id, boolean status) {
-        Task task = taskList.get(id);
-        task.setStatus(status);
-        taskList.add(id, task);
+    public void updateTask(Task task) {
+        taskList.add(task.getId(), task);
         saveTaskList();
     }
 
-    public void deleteTask(int id) {
-        taskList.remove(id);
+    public void deleteTask(Task task) {
+        taskList.remove(task.getId());
         saveTaskList();
     }
 
