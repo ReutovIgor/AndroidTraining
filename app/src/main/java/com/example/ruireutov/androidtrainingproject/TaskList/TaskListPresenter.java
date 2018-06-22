@@ -1,8 +1,16 @@
 package com.example.ruireutov.androidtrainingproject.TaskList;
 
-public class TaskListPresenter implements ITaskListPresenterControl{
+import android.content.Context;
+
+import com.example.ruireutov.androidtrainingproject.MainApplication;
+import com.example.ruireutov.androidtrainingproject.Repository.TaskRepositoryControl;
+
+class TaskListPresenter implements ITaskListPresenterControl{
     private ITaskListViewControl viewControl;
-    TaskListPresenter(ITaskListViewControl viewControl) {
+    private TaskRepositoryControl taskRepositoryControl;
+
+    TaskListPresenter(ITaskListViewControl viewControl, Context context) {
         this.viewControl = viewControl;
+        taskRepositoryControl = new TaskRepositoryControl(((MainApplication)context.getApplicationContext()).getFileDataStorage());
     }
 }

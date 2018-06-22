@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class FileDataStorage {
+public class FileDataStorage implements IDataStorage{
     private File taskListStorage;
 
     public FileDataStorage(String path) {
@@ -23,11 +23,13 @@ public class FileDataStorage {
         }
     }
 
-    public List<Task> readTaskListFromFile() {
+    @Override
+    public List<Task> getTaskList() {
         return null;
     }
 
-    public void writeTaskListToFile(List<Task> taskList) {
+    @Override
+    public void saveTaskList(List<Task> taskList) {
 
     }
 }
