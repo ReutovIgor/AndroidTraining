@@ -10,12 +10,14 @@ import android.widget.ListView;
 
 import com.example.ruireutov.androidtrainingproject.Model.Task;
 import com.example.ruireutov.androidtrainingproject.R;
+import com.example.ruireutov.androidtrainingproject.Views.TaskDialogView;
 
 import java.util.List;
 
 public class TaskListView extends Fragment implements ITaskListViewControl{
     private TaskListAdapter taskListAdapter;
     private ITaskListPresenterControl presenterControl;
+    TaskDialogView taskDialogView;
 
     public TaskListView() {}
 
@@ -23,6 +25,8 @@ public class TaskListView extends Fragment implements ITaskListViewControl{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenterControl = new TaskListPresenter(this, getActivity());
+        taskDialogView = new TaskDialogView();
+        taskDialogView.setPresenterControl(presenterControl);
     }
 
     @Override
@@ -42,7 +46,7 @@ public class TaskListView extends Fragment implements ITaskListViewControl{
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO open Dialog view
+                taskDialogView.showNewTaskDialog(getFragmentManager());
             }
         });
 

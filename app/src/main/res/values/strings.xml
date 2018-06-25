@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">AndroidTrainingProject</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Task dialog view strings-->
+    <string name="task_dialog_description_title_create_task">New task</string>
+    <string name="task_dialog_description_title_update_task">Update task</string>
+    <string name="task_dialog_description_title_delete_task">Delete task</string>
+    <string name="task_dialog_edit_text_hint">Input task name</string>
+    <string name="task_dialog_button_create_task">Add</string>
+    <string name="task_dialog_button_update_task">Update</string>
+    <string name="task_dialog_button_delete_task">Delete</string>
+    <string name="task_dialog_button_cancel">Cancel</string>
 </resources>
