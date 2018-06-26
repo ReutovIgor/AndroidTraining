@@ -8,12 +8,11 @@ import java.util.List;
 
 public class TaskRepositoryControl{
     private IDataStorage storage;
-    private List<Task> taskList;
+    private final List<Task> taskList;
 
     public TaskRepositoryControl(IDataStorage storage) {
         this.storage = storage;
         taskList = new ArrayList<>();
-        taskList = getTasks();
     }
 
     public void setDataStorage(IDataStorage storage) {
@@ -21,7 +20,12 @@ public class TaskRepositoryControl{
     }
 
     public List<Task> getTasks() {
-        return storage.getTaskList();
+        List<Task> list = storage.getTaskList();
+        if(list != null) {
+            taskList.clear();
+            taskList.addAll(list);
+        }
+        return taskList;
     }
 
     public void addTask(Task task) {
@@ -30,7 +34,7 @@ public class TaskRepositoryControl{
     }
 
     public void updateTask(Task task) {
-        taskList.add(task.getId(), task);
+        taskList.set(task.getId(), task);
         saveTaskList();
     }
 

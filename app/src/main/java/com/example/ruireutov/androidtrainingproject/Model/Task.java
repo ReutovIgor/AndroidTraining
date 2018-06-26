@@ -5,14 +5,15 @@ public class Task {
     private String label;
     private boolean status;
 
-    public Task(int id, String description) {
+    public Task(int id, String label) {
         this.id = id;
-        label = description;
+        this.label = label;
         status = false;
     }
 
     public int getId() { return id; }
     public String getLabel() { return label; }
+    public void setLabel(String label) { this.label = label; }
     public boolean isDone () { return status; }
     public void setStatus(boolean isDone) { status = isDone; }
 }

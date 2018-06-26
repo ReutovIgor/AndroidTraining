@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ruireutov.androidtrainingproject.Model.Task;
@@ -21,6 +22,8 @@ public class TaskListAdapter extends BaseAdapter {
 
     public interface TaskAdapterCallback{
         void onTaskChanged(Task task);
+        void onTaskUpdate(Task task);
+        void onTaskDelete(Task task);
     }
 
 
@@ -33,12 +36,16 @@ public class TaskListAdapter extends BaseAdapter {
 
         private final TextView label;
         private final CheckBox checkBox;
+        private final ImageView editButton;
+        private final ImageView deleteButton;
         private final TaskAdapterCallback callback;
         private Task task;
 
-        ViewHolder(View itemView, TaskAdapterCallback callback1) {
+        ViewHolder(View itemView, final TaskAdapterCallback callback1) {
             this.label = itemView.findViewById(R.id.text_task_name);
             this.checkBox = itemView.findViewById(R.id.checkbox_task_status);
+            this.editButton = itemView.findViewById(R.id.button_edit_task);
+            this.deleteButton = itemView.findViewById(R.id.button_delete_task);
 
             this.callback = callback1;
 
@@ -47,6 +54,20 @@ public class TaskListAdapter extends BaseAdapter {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     task.setStatus(isChecked);
                     callback.onTaskChanged(task);
+                }
+            });
+
+            this.editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onTaskUpdate(task);
+                }
+            });
+
+            this.deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onTaskDelete(task);
                 }
             });
         }
@@ -59,9 +80,11 @@ public class TaskListAdapter extends BaseAdapter {
     }
 
     public void setTaskList(List<Task> taskList) {
-        this.taskList.clear();
-        this.taskList.addAll(taskList);
-        notifyDataSetChanged();
+        if(taskList != null) {
+            this.taskList.clear();
+            this.taskList.addAll(taskList);
+            notifyDataSetChanged();
+        }
     }
 
 
@@ -99,4 +122,27 @@ public class TaskListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public Task addTask(String description) {
+//        taskList.get(taskList.get)
+        Task task = new Task(getCount(), description);
+        taskList.add(task);
+        notifyDataSetChanged();
+        return task;
+    }
+
+    public Task updateTask(int id, String label) {
+        Task task = taskList.get(id);
+        task.setLabel(label);
+        taskList.set(id, task);
+        notifyDataSetChanged();
+
+        return task;
+    }
+
+    public Task deleteTask(int id) {
+        Task task = taskList.remove(id);
+        notifyDataSetChanged();
+
+        return task;
+    }
 }

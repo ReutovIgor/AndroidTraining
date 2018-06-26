@@ -8,10 +8,11 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ruireutov.androidtrainingproject.R;
-import com.example.ruireutov.androidtrainingproject.TaskList.ITaskListPresenterControl;
+import com.example.ruireutov.androidtrainingproject.TaskList.TaskListView;
 
 public class TaskDialogView extends DialogFragment{
     private static final int NEW_TASK_DIALOG = 0;
@@ -20,18 +21,30 @@ public class TaskDialogView extends DialogFragment{
 
     int dialogType;
     EditText taskName;
-    ITaskListPresenterControl presenterControl;
-
+    Button applyButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_task_dialog, container, false);
 
         taskName = v.findViewById(R.id.text_task_dialog_description);
-        v.findViewById(R.id.button_task_dialog_apply).setOnClickListener(new View.OnClickListener() {
+        applyButton = v.findViewById(R.id.button_task_dialog_apply);
+        applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String str = taskName.getText().toString();
+                TaskListView tv = (TaskListView) getTargetFragment();
+                switch (dialogType) {
+                    case NEW_TASK_DIALOG:
+                        tv.onNewTask(taskName.getText().toString());
+                        break;
+                    case UPDATE_TASK_DIALOG:
+                        tv.onUpdateTask(getArguments().getInt("id"), taskName.getText().toString());
+                        break;
+                    case DELETE_TASK_DIALOG:
+                        tv.onDeleteTask(getArguments().getInt("id"));
+                        break;
+                }
+                dismiss();
             }
         });
 
@@ -42,21 +55,29 @@ public class TaskDialogView extends DialogFragment{
             }
         });
 
+        Bundle args = getArguments();
+
         switch (dialogType) {
             case NEW_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_create_task));
                 taskName.setText("");
                 taskName.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                taskName.setFocusable(true);
+                applyButton.setText(getString(R.string.task_dialog_button_create_task));
                 break;
             case UPDATE_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_update_task));
-                taskName.setText("");
+                taskName.setText(args.getString("description"));
                 taskName.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                taskName.setFocusable(true);
+                applyButton.setText(getString(R.string.task_dialog_button_update_task));
                 break;
             case DELETE_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_delete_task));
-                taskName.setText("");
+                taskName.setText(args.getString("description"));
                 taskName.setInputType(InputType.TYPE_NULL);
+                taskName.setFocusable(false);
+                applyButton.setText(getString(R.string.task_dialog_button_delete_task));
                 break;
         }
 
@@ -81,9 +102,5 @@ public class TaskDialogView extends DialogFragment{
     public void showDeleteTaskDialog(FragmentManager fragmentManager) {
         dialogType = DELETE_TASK_DIALOG;
         show(fragmentManager, "DeleteTaskDialog");
-    }
-
-    public void setPresenterControl(ITaskListPresenterControl presenterControl) {
-        this.presenterControl = presenterControl;
     }
 }

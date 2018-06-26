@@ -15,6 +15,8 @@ import com.example.ruireutov.androidtrainingproject.Views.TaskDialogView;
 import java.util.List;
 
 public class TaskListView extends Fragment implements ITaskListViewControl{
+    public static final int TASK_LIST_ID = 0;
+
     private TaskListAdapter taskListAdapter;
     private ITaskListPresenterControl presenterControl;
     TaskDialogView taskDialogView;
@@ -24,9 +26,6 @@ public class TaskListView extends Fragment implements ITaskListViewControl{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenterControl = new TaskListPresenter(this, getActivity());
-        taskDialogView = new TaskDialogView();
-        taskDialogView.setPresenterControl(presenterControl);
     }
 
     @Override
@@ -39,6 +38,28 @@ public class TaskListView extends Fragment implements ITaskListViewControl{
             public void onTaskChanged(Task task) {
                 presenterControl.updateTask(task);
             }
+
+            @Override
+            public void onTaskUpdate(Task task) {
+                Bundle args = new Bundle();
+                args.putInt("id", task.getId());
+                args.putString("description", task.getLabel());
+                taskDialogView.setArguments(args);
+
+                setTargetFragmentForDialog();
+                taskDialogView.showUpdateTaskDialog(getFragmentManager());
+            }
+
+            @Override
+            public void onTaskDelete(Task task) {
+                Bundle args = new Bundle();
+                args.putInt("id", task.getId());
+                args.putString("description", task.getLabel());
+                taskDialogView.setArguments(args);
+
+                setTargetFragmentForDialog();
+                taskDialogView.showDeleteTaskDialog(getFragmentManager());
+            }
         });
         list.setAdapter(taskListAdapter);
 
@@ -46,9 +67,13 @@ public class TaskListView extends Fragment implements ITaskListViewControl{
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setTargetFragmentForDialog();
                 taskDialogView.showNewTaskDialog(getFragmentManager());
             }
         });
+
+        presenterControl = new TaskListPresenter(this, getActivity());
+        taskDialogView = new TaskDialogView();
 
         return v;
     }
@@ -56,5 +81,21 @@ public class TaskListView extends Fragment implements ITaskListViewControl{
     @Override
     public void setTaskList(List<Task> taskList) {
         taskListAdapter.setTaskList(taskList);
+    }
+
+    public void onNewTask(String description) {
+        presenterControl.addTask(taskListAdapter.addTask(description));
+    }
+
+    public void onUpdateTask(int id, String label) {
+        presenterControl.updateTask(taskListAdapter.updateTask(id, label));
+    }
+
+    public void onDeleteTask(int id) {
+        presenterControl.deleteTask(taskListAdapter.deleteTask(id));
+    }
+
+    private void setTargetFragmentForDialog() {
+        taskDialogView.setTargetFragment(this, TASK_LIST_ID);
     }
 }
