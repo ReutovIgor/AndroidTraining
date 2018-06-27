@@ -7,20 +7,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepositoryControl{
-    private IDataStorage storage;
+    private IDataStorage localStorage;
+    private IDataStorage serverStorage;
     private final List<Task> taskList;
 
     public TaskRepositoryControl(IDataStorage storage) {
-        this.storage = storage;
+        this.localStorage = storage;
         taskList = new ArrayList<>();
     }
 
-    public void setDataStorage(IDataStorage storage) {
-        this.storage = storage;
+    public void setExternalDataStorage(IDataStorage storage) {
+        serverStorage = storage;
     }
 
     public List<Task> getTasks() {
-        List<Task> list = storage.getTaskList();
+        List<Task> list;
+        if(serverStorage != null) {
+            list = serverStorage.getTaskList();
+        } else {
+            list = localStorage.getTaskList();
+        }
+
         if(list != null) {
             taskList.clear();
             taskList.addAll(list);
@@ -50,6 +57,9 @@ public class TaskRepositoryControl{
     }
 
     private void saveTaskList() {
-        storage.saveTaskList(taskList);
+        if(serverStorage != null) {
+            serverStorage.saveTaskList(taskList);
+        }
+        localStorage.saveTaskList(taskList);
     }
 }

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">AndroidTrainingProject</string>
 
+    <!--Server coordinates-->
+    <string name="server_host">10.0.2.2</string>
+    <string name="server_port">8080</string>
+    <string name="server_key">crappy_task_list</string>
+
     <!--Task list view strings-->
     <string name="task_list_button_edit_task_description">Edit task button</string>
     <string name="task_list_button_delete_task_description">Delete task button</string>

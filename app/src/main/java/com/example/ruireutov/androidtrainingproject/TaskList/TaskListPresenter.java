@@ -13,6 +13,7 @@ class TaskListPresenter implements ITaskListPresenterControl{
     TaskListPresenter(ITaskListViewControl viewControl, Context context) {
         this.viewControl = viewControl;
         taskRepositoryControl = new TaskRepositoryControl(((MainApplication)context.getApplicationContext()).getFileDataStorage());
+        taskRepositoryControl.setExternalDataStorage(((MainApplication)context.getApplicationContext()).getHttpDataStorage());
         viewControl.setTaskList(taskRepositoryControl.getTasks());
     }
 
