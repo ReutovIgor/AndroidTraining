@@ -34,13 +34,19 @@ public class TaskRepositoryControl{
     }
 
     public void updateTask(Task task) {
-        taskList.set(task.getId(), task);
-        saveTaskList();
+        int pos = taskList.indexOf(task);
+        if(pos != -1) {
+            taskList.set(pos, task);
+            saveTaskList();
+        }
     }
 
     public void deleteTask(Task task) {
-        taskList.remove(task.getId());
-        saveTaskList();
+        int pos = taskList.indexOf(task);
+        if(pos != -1) {
+            taskList.remove(pos);
+            saveTaskList();
+        }
     }
 
     private void saveTaskList() {

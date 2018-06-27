@@ -88,11 +88,15 @@ public class TaskListView extends Fragment implements ITaskListViewControl{
     }
 
     public void onUpdateTask(int id, String label) {
-        presenterControl.updateTask(taskListAdapter.updateTask(id, label));
+        Task t = taskListAdapter.updateTask(id, label);
+        if(t != null)
+            presenterControl.updateTask(t);
     }
 
     public void onDeleteTask(int id) {
-        presenterControl.deleteTask(taskListAdapter.deleteTask(id));
+        Task t = taskListAdapter.deleteTask(id);
+        if(t != null)
+            presenterControl.deleteTask(t);
     }
 
     private void setTargetFragmentForDialog() {
