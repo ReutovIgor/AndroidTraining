@@ -1,6 +1,9 @@
 package com.example.ruireutov.androidtrainingproject.Model;
 
-public class Task {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Task implements Parcelable{
     private final int id;
     private String label;
     private boolean status;
@@ -16,4 +19,14 @@ public class Task {
     public void setLabel(String label) { this.label = label; }
     public boolean isDone () { return status; }
     public void setStatus(boolean isDone) { status = isDone; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }

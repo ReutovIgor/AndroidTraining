@@ -1,4 +1,4 @@
-package com.example.ruireutov.androidtrainingproject.TaskList;
+package com.example.ruireutov.androidtrainingproject.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +27,7 @@ public class TaskListAdapter extends BaseAdapter {
     }
 
 
-    TaskListAdapter(TaskAdapterCallback callback) {
+    public TaskListAdapter(TaskAdapterCallback callback) {
         this.taskList = new ArrayList<>();
         taskAdapterCallback = callback;
     }
@@ -49,33 +49,22 @@ public class TaskListAdapter extends BaseAdapter {
 
             this.callback = callback1;
 
-            this.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    task.setStatus(isChecked);
-                    callback.onTaskChanged(task);
-                }
-            });
+            this.checkBox.setOnCheckedChangeListener(this::onCheckedChanged);
 
-            this.editButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callback.onTaskUpdate(task);
-                }
-            });
+            this.editButton.setOnClickListener((View v) -> callback.onTaskUpdate((task)));
 
-            this.deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callback.onTaskDelete(task);
-                }
-            });
+            this.deleteButton.setOnClickListener((View v) -> callback.onTaskDelete((task)));
         }
 
         void bind(Task data){
             task = data;
             label.setText(data.getLabel());
             checkBox.setChecked(data.isDone());
+        }
+
+        private void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            task.setStatus(isChecked);
+            callback.onTaskChanged(task);
         }
     }
 

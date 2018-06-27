@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ruireutov.androidtrainingproject.R;
-import com.example.ruireutov.androidtrainingproject.TaskList.TaskListView;
 
 public class TaskDialogView extends DialogFragment{
     private static final int NEW_TASK_DIALOG = 0;
@@ -38,10 +37,10 @@ public class TaskDialogView extends DialogFragment{
                         tv.onNewTask(taskName.getText().toString());
                         break;
                     case UPDATE_TASK_DIALOG:
-                        tv.onUpdateTask(getArguments().getInt("id"), taskName.getText().toString());
+//                        tv.onUpdateTask(getArguments().getInt("id"), taskName.getText().toString());
                         break;
                     case DELETE_TASK_DIALOG:
-                        tv.onDeleteTask(getArguments().getInt("id"));
+//                        tv.onDeleteTask(getArguments().getInt("id"));
                         break;
                 }
                 dismiss();

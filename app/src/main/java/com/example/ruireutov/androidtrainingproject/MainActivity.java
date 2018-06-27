@@ -4,7 +4,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.ruireutov.androidtrainingproject.TaskList.TaskListView;
+import com.example.ruireutov.androidtrainingproject.Views.TaskListView;
 
 public class MainActivity extends AppCompatActivity {
 

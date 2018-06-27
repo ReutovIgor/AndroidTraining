@@ -1,4 +1,4 @@
-package com.example.ruireutov.androidtrainingproject.TaskList;
+package com.example.ruireutov.androidtrainingproject.Views;
 
 import com.example.ruireutov.androidtrainingproject.Model.Task;
 

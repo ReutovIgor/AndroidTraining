@@ -2,11 +2,13 @@ package com.example.ruireutov.androidtrainingproject.Repository;
 
 import com.example.ruireutov.androidtrainingproject.DataStorage.IDataStorage;
 import com.example.ruireutov.androidtrainingproject.Model.Task;
+import com.example.ruireutov.androidtrainingproject.Utils.AObsrver;
+import com.example.ruireutov.androidtrainingproject.Utils.IObserver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskRepositoryControl{
+public class TaskRepositoryControl extends AObsrver implements IObserver{
     private IDataStorage localStorage;
     private IDataStorage serverStorage;
     private final List<Task> taskList;
@@ -14,10 +16,6 @@ public class TaskRepositoryControl{
     public TaskRepositoryControl(IDataStorage storage) {
         this.localStorage = storage;
         taskList = new ArrayList<>();
-    }
-
-    public void setExternalDataStorage(IDataStorage storage) {
-        serverStorage = storage;
     }
 
     public List<Task> getTasks() {
@@ -35,7 +33,12 @@ public class TaskRepositoryControl{
         return taskList;
     }
 
-    public void addTask(Task task) {
+    public void addTask(String label) {
+        int id = 0;
+        if (taskList.size() > 0) {
+            id = taskList.get(taskList.size() - 1).getId() + 1;
+        }
+        Task task = new Task(id, label);
         taskList.add(task);
         saveTaskList();
     }
