@@ -25,11 +25,6 @@ public class TaskListView extends Fragment implements ITaskListViewControl, IVie
     public TaskListView() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_task_list, container, false);
 
@@ -46,17 +41,16 @@ public class TaskListView extends Fragment implements ITaskListViewControl, IVie
                 args.putParcelable("task", task);
                 TaskDialogView dialogView = getTaskDialogView();
                 dialogView.setArguments(args);
+                dialogView.showUpdateTaskDialog(getFragmentManager());
             }
 
             @Override
             public void onTaskDelete(Task task) {
-//                Bundle args = new Bundle();
-//                args.putInt("id", task.getId());
-//                args.putString("description", task.getLabel());
-//                taskDialogView.setArguments(args);
-//
-//                setTargetFragmentForDialog();
-//                taskDialogView.showDeleteTaskDialog(getFragmentManager());
+                Bundle args = new Bundle();
+                args.putParcelable("task", task);
+                TaskDialogView dialogView = getTaskDialogView();
+                dialogView.setArguments(args);
+                dialogView.showDeleteTaskDialog(getFragmentManager());
             }
         });
         list.setAdapter(taskListAdapter);

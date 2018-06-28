@@ -29,23 +29,27 @@ public class TaskDialogView extends DialogFragment{
 
         taskName = v.findViewById(R.id.text_task_dialog_description);
         applyButton = v.findViewById(R.id.button_task_dialog_apply);
-        applyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        applyButton.setOnClickListener((View view) -> {
+                Bundle args = getArguments();
                 TaskListView tv = (TaskListView) getTargetFragment();
                 switch (dialogType) {
                     case NEW_TASK_DIALOG:
                         tv.onNewTask(taskName.getText().toString());
                         break;
                     case UPDATE_TASK_DIALOG:
-//                        tv.onUpdateTask(getArguments().getInt("id"), taskName.getText().toString());
+                        if(args.containsKey("task")) {
+                            Task task = args.getParcelable("task");
+                            task.setLabel(taskName.getText().toString());
+                            tv.onUpdateTask(task);
+                        }
                         break;
                     case DELETE_TASK_DIALOG:
-//                        tv.onDeleteTask(getArguments().getInt("id"));
+                        if(args.containsKey("task")) {
+                            tv.onDeleteTask(args.getParcelable("task"));
+                        }
                         break;
                 }
                 dismiss();
-            }
         });
 
         v.findViewById(R.id.button_task_dialog_cancel).setOnClickListener(new View.OnClickListener() {
@@ -55,32 +59,35 @@ public class TaskDialogView extends DialogFragment{
             }
         });
 
+        String dialogText = "";
+        //check passed args
         Bundle args = getArguments();
-        Task task = args.getParcelable("task");
+        if(args.containsKey("task")) {
+            Task task = args.getParcelable("task");
+            dialogText = task != null ? task.getLabel() : "";
+        }
 
         switch (dialogType) {
             case NEW_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_create_task));
-                taskName.setText("");
                 taskName.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
                 taskName.setFocusable(true);
                 applyButton.setText(getString(R.string.task_dialog_button_create_task));
                 break;
             case UPDATE_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_update_task));
-//                taskName.setText(args.getString("description"));
                 taskName.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
                 taskName.setFocusable(true);
                 applyButton.setText(getString(R.string.task_dialog_button_update_task));
                 break;
             case DELETE_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_delete_task));
-//                taskName.setText(args.getString("description"));
                 taskName.setInputType(InputType.TYPE_NULL);
                 taskName.setFocusable(false);
                 applyButton.setText(getString(R.string.task_dialog_button_delete_task));
                 break;
         }
+        taskName.setText(dialogText);
 
         return v;
     }

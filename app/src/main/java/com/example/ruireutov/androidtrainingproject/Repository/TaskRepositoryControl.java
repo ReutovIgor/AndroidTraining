@@ -10,7 +10,6 @@ import java.util.List;
 
 public class TaskRepositoryControl extends AObsrver implements IObserver{
     private IDataStorage localStorage;
-    private IDataStorage serverStorage;
     private final List<Task> taskList;
 
     public TaskRepositoryControl(IDataStorage storage) {
@@ -19,12 +18,7 @@ public class TaskRepositoryControl extends AObsrver implements IObserver{
     }
 
     public List<Task> getTasks() {
-        List<Task> list;
-        if(serverStorage != null) {
-            list = serverStorage.getTaskList();
-        } else {
-            list = localStorage.getTaskList();
-        }
+        List<Task> list = localStorage.getTaskList();
 
         if(list != null) {
             taskList.clear();
@@ -60,9 +54,7 @@ public class TaskRepositoryControl extends AObsrver implements IObserver{
     }
 
     private void saveTaskList() {
-        if(serverStorage != null) {
-            serverStorage.saveTaskList(taskList);
-        }
         localStorage.saveTaskList(taskList);
+        onChanged();
     }
 }

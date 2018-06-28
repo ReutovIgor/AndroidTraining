@@ -110,39 +110,4 @@ public class TaskListAdapter extends BaseAdapter {
 
         return convertView;
     }
-
-    public Task addTask(String description) {
-        int id = 0;
-        if (taskList.size() > 0) {
-            id = taskList.get(taskList.size() - 1).getId() + 1;
-        }
-        Task task = new Task(id, description);
-        taskList.add(task);
-        notifyDataSetChanged();
-        return task;
-    }
-
-    public Task updateTask(int id, String label) {
-        for(Task t : taskList) {
-            if(id == t.getId()) {
-                t.setLabel(label);
-                notifyDataSetChanged();
-                return t;
-            }
-        }
-
-        return null;
-    }
-
-    public Task deleteTask(int id) {
-        for(Task t : taskList) {
-            if(id == t.getId()) {
-                taskList.remove(t);
-                notifyDataSetChanged();
-                return t;
-            }
-        }
-
-        return null;
-    }
 }
