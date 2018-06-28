@@ -27,6 +27,26 @@ public class Task implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.label);
+        dest.writeInt(this.status ? 1 : 0);
+    }
 
+//  Parcelable part
+    public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
+
+    private Task(Parcel in) {
+        this.id = in.readInt();
+        this.label = in.readString();
+        int status = in.readInt();
+        this.status = status != 0;
     }
 }

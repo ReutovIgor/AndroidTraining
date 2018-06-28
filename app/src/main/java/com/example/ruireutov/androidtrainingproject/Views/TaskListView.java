@@ -42,14 +42,10 @@ public class TaskListView extends Fragment implements ITaskListViewControl, IVie
 
             @Override
             public void onTaskUpdate(Task task) {
-//                Bundle args = new Bundle();
-//                args.putInt("id", task.getId());
-//                args.putString("description", task.getLabel());
-//                taskDialogView.setArguments(args);
-//
-//                setTargetFragmentForDialog();
-//                taskDialogView.showUpdateTaskDialog(getFragmentManager());
+                Bundle args = new Bundle();
+                args.putParcelable("task", task);
                 TaskDialogView dialogView = getTaskDialogView();
+                dialogView.setArguments(args);
             }
 
             @Override
@@ -76,6 +72,12 @@ public class TaskListView extends Fragment implements ITaskListViewControl, IVie
         presenterControl.bindView(this);
 
         return v;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenterControl.unbindView();
     }
 
     @Override

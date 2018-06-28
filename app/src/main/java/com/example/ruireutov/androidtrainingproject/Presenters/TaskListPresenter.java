@@ -9,7 +9,7 @@ import com.example.ruireutov.androidtrainingproject.Views.ITaskListViewControl;
 import com.example.ruireutov.androidtrainingproject.Utils.IObserver;
 import com.example.ruireutov.androidtrainingproject.Views.IView;
 
-public class TaskListPresenter implements ITaskListPresenterControl, IPresenter {
+public class TaskListPresenter implements ITaskListPresenterControl {
     private ITaskListViewControl viewControl;
     private TaskRepositoryControl taskRepositoryControl;
 

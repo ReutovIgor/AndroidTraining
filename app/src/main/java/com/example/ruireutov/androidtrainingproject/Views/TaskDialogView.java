@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.ruireutov.androidtrainingproject.Model.Task;
 import com.example.ruireutov.androidtrainingproject.R;
 
 public class TaskDialogView extends DialogFragment{
@@ -55,6 +56,7 @@ public class TaskDialogView extends DialogFragment{
         });
 
         Bundle args = getArguments();
+        Task task = args.getParcelable("task");
 
         switch (dialogType) {
             case NEW_TASK_DIALOG:
@@ -66,14 +68,14 @@ public class TaskDialogView extends DialogFragment{
                 break;
             case UPDATE_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_update_task));
-                taskName.setText(args.getString("description"));
+//                taskName.setText(args.getString("description"));
                 taskName.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
                 taskName.setFocusable(true);
                 applyButton.setText(getString(R.string.task_dialog_button_update_task));
                 break;
             case DELETE_TASK_DIALOG:
                 getDialog().setTitle(getString(R.string.task_dialog_description_title_delete_task));
-                taskName.setText(args.getString("description"));
+//                taskName.setText(args.getString("description"));
                 taskName.setInputType(InputType.TYPE_NULL);
                 taskName.setFocusable(false);
                 applyButton.setText(getString(R.string.task_dialog_button_delete_task));
