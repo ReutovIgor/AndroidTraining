@@ -1,5 +1,8 @@
 package com.example.ruireutov.androidtrainingproject;
 
+import com.example.ruireutov.androidtrainingproject.DataStorage.FileDataStorage;
+import com.google.gson.Gson;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

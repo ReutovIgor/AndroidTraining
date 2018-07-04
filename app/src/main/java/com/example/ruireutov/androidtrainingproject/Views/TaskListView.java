@@ -62,8 +62,8 @@ public class TaskListView extends Fragment implements ITaskListViewControl, IVie
         });
 
 
-        presenterControl = (ITaskListPresenterControl) ((MainApplication)getActivity().getApplicationContext()).getTaskListPresenter();
-        presenterControl.bindView(this);
+//        presenterControl = (ITaskListPresenterControl) ((MainApplication)getActivity().getApplicationContext()).getTaskListPresenter();
+//        presenterControl.bindView(this);
 
         return v;
     }
@@ -71,7 +71,7 @@ public class TaskListView extends Fragment implements ITaskListViewControl, IVie
     @Override
     public void onStop() {
         super.onStop();
-        presenterControl.unbindView();
+//        presenterControl.unbindView();
     }
 
     @Override
