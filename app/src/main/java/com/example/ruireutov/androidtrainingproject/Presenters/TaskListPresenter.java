@@ -1,8 +1,5 @@
 package com.example.ruireutov.androidtrainingproject.Presenters;
 
-import android.content.Context;
-
-import com.example.ruireutov.androidtrainingproject.MainApplication;
 import com.example.ruireutov.androidtrainingproject.Model.Task;
 import com.example.ruireutov.androidtrainingproject.Repository.TaskRepositoryControl;
 import com.example.ruireutov.androidtrainingproject.Views.ITaskListViewControl;
@@ -13,8 +10,8 @@ public class TaskListPresenter implements ITaskListPresenterControl {
     private ITaskListViewControl viewControl;
     private TaskRepositoryControl taskRepositoryControl;
 
-    public TaskListPresenter(Context context) {
-        taskRepositoryControl = new TaskRepositoryControl(((MainApplication)context.getApplicationContext()).getFileDataStorage());
+    public TaskListPresenter(TaskRepositoryControl taskRepositoryControl) {
+        this.taskRepositoryControl = taskRepositoryControl;
         taskRepositoryControl.addListener(this::onChanged);
     }
 
