@@ -1,9 +1,7 @@
 package com.example.ruireutov.androidtrainingproject.Presenters;
 
-import com.example.ruireutov.androidtrainingproject.Model.Task;
+import com.example.ruireutov.androidtrainingproject.Adapters.TaskListAdapter;
 
 public interface ITaskListPresenterControl extends IPresenter{
-    void addTask(String label);
-    void updateTask(Task task);
-    void deleteTask(Task task);
+    TaskListAdapter.TaskAdapterCallback getAdapterItemHandlers();
 }
