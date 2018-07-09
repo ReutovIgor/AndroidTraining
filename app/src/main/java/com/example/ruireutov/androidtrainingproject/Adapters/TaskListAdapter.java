@@ -11,9 +11,12 @@ import android.widget.TextView;
 
 import com.example.ruireutov.androidtrainingproject.Model.Task;
 import com.example.ruireutov.androidtrainingproject.R;
+import com.example.ruireutov.androidtrainingproject.Scopes.TaskListFragmentScope;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class TaskListAdapter extends BaseAdapter {
 
@@ -26,7 +29,7 @@ public class TaskListAdapter extends BaseAdapter {
         void onTaskDelete(Task task);
     }
 
-
+    @Inject
     public TaskListAdapter(TaskAdapterCallback callback) {
         this.taskList = new ArrayList<>();
         taskAdapterCallback = callback;

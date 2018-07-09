@@ -69,6 +69,7 @@ public class TaskListPresenter implements ITaskListPresenterControl {
             TaskDialogView dialogView = new TaskDialogView();
             dialogView.setArguments(args);
             dialogView.setTaskDialogViewHandlers(responseHandlers);
+            viewControl.showDialogFragment(dialogView);
         }
 
         @Override
@@ -79,6 +80,7 @@ public class TaskListPresenter implements ITaskListPresenterControl {
             TaskDialogView dialogView = new TaskDialogView();
             dialogView.setArguments(args);
             dialogView.setTaskDialogViewHandlers(responseHandlers);
+            viewControl.showDialogFragment(dialogView);
         }
     }
 
@@ -110,6 +112,7 @@ public class TaskListPresenter implements ITaskListPresenterControl {
             TaskDialogView dialogView = new TaskDialogView();
             dialogView.setArguments(args);
             dialogView.setTaskDialogViewHandlers(responseHandlers);
+            viewControl.showDialogFragment(dialogView);
         }
     }
 }
