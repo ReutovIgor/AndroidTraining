@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <EditText
-        android:id="@+id/text_task_dialog_description"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.text.InputType"/>
+        <import type="com.example.ruireutov.androidtrainingproject.Views.TaskDialogView"/>
+        <variable
+            name="taskData"
+            type="com.example.ruireutov.androidtrainingproject.Model.TaskDialogViewModel"/>
+        <variable
+            name="handlers"
+            type="com.example.ruireutov.androidtrainingproject.Presenters.TaskDialogPresenter"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:hint="@string/task_dialog_edit_text_hint"/>
-    <Button
-        android:id="@+id/button_task_dialog_apply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_task_dialog_description"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/button_task_dialog_cancel"
-        android:text="@string/task_dialog_button_create_task"/>
-    <Button
-        android:id="@+id/button_task_dialog_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_task_dialog_description"
-        app:layout_constraintLeft_toRightOf="@id/button_task_dialog_apply"
-        app:layout_constraintRight_toRightOf="parent"
-        android:text="@string/task_dialog_button_cancel"/>
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/text_task_dialog_description"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="@{taskData.dialogType == TaskDialogView.DELETE_TASK_DIALOG ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
+            android:focusable="@{taskData.dialogType == TaskDialogView.DELETE_TASK_DIALOG ? false : true}"
+            android:selection="@{taskData.taskData.label.length()}"
+            android:hint="@string/task_dialog_edit_text_hint"
+            android:text="@={taskData.taskData.label}"/>
+        <Button
+            android:id="@+id/button_task_dialog_apply"
+            app:layout_constraintTop_toBottomOf="@id/text_task_dialog_description"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/button_task_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> handlers.onApplyAction()}"
+            android:text="@string/task_dialog_button_create_task"/>
+        <Button
+            android:id="@+id/button_task_dialog_cancel"
+            app:layout_constraintTop_toBottomOf="@id/text_task_dialog_description"
+            app:layout_constraintLeft_toRightOf="@id/button_task_dialog_apply"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> handlers.onCancelAction()}"
+            android:text="@string/task_dialog_button_cancel"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

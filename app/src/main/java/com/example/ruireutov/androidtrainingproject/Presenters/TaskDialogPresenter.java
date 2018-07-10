@@ -4,23 +4,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.example.ruireutov.androidtrainingproject.Model.Task;
+import com.example.ruireutov.androidtrainingproject.Model.TaskDialogViewModel;
 import com.example.ruireutov.androidtrainingproject.Views.ITaskDialogViewControl;
 import com.example.ruireutov.androidtrainingproject.Views.IView;
 import com.example.ruireutov.androidtrainingproject.Views.TaskDialogView;
 
 public class TaskDialogPresenter implements ITaskDialogPresenterControl {
     private final static String TASK_DIALOG_PRESENTER_LOG_TAG ="TaskDialogPresenter:";
-    private Task task;
-    private int taskDialogType;
+    private TaskDialogViewModel taskDialogViewModel;
     private ITaskDialogViewControl viewControl;
     private TaskDialogView.ITaskDialogResponseHandlers responseHandlers;
-    private View.OnClickListener applyButtonListener;
-    private View.OnClickListener cancelButtonListener;
 
     public TaskDialogPresenter() {
-        applyButtonListener = new ApplyButtonListener();
-        cancelButtonListener = new CancelButtonListener();
+        taskDialogViewModel = new TaskDialogViewModel(TaskDialogView.NEW_TASK_DIALOG, null);
     }
 
     @Override
@@ -40,24 +36,23 @@ public class TaskDialogPresenter implements ITaskDialogPresenterControl {
 
     @Override
     public void setDialogArgs(Bundle bundle) {
-        taskDialogType = bundle.getInt(TaskDialogView.ARGS_TASK_DIALOG_TYPE);
-        task = bundle.containsKey(TaskDialogView.ARGS_TASK_DATA) ? bundle.getParcelable(TaskDialogView.ARGS_TASK_DATA) : new Task(-1, "");
-        if(task != null) {
-            switch (taskDialogType) {
-                case TaskDialogView.NEW_TASK_DIALOG:
-                    viewControl.setNewTaskDialogType();
-                    break;
-                case TaskDialogView.UPDATE_TASK_DIALOG:
-                    viewControl.setUpdateTaskDialogType(task.getLabel());
-                    break;
-                case TaskDialogView.DELETE_TASK_DIALOG:
-                    viewControl.setDeleteTaskDialogType(task.getLabel());
-                    break;
-            }
-        } else {
-            Log.e(TASK_DIALOG_PRESENTER_LOG_TAG, "setDialogArgs: received arguments contained null task, dialog will not be shown");
-            viewControl.removeDialogView();
+        int taskDialogType = bundle.getInt(TaskDialogView.ARGS_TASK_DIALOG_TYPE);
+        taskDialogViewModel = new TaskDialogViewModel(
+                taskDialogType,
+                bundle.containsKey(TaskDialogView.ARGS_TASK_DATA)  ? bundle.getParcelable(TaskDialogView.ARGS_TASK_DATA) : null);
+
+        switch (taskDialogType) {
+            case TaskDialogView.NEW_TASK_DIALOG:
+                viewControl.setNewTaskDialogType();
+                break;
+            case TaskDialogView.UPDATE_TASK_DIALOG:
+                viewControl.setUpdateTaskDialogType();
+                break;
+            case TaskDialogView.DELETE_TASK_DIALOG:
+                viewControl.setDeleteTaskDialogType();
+                break;
         }
+        viewControl.bindData(taskDialogViewModel);
     }
 
     @Override
@@ -65,40 +60,23 @@ public class TaskDialogPresenter implements ITaskDialogPresenterControl {
         responseHandlers = handlers;
     }
 
-    @Override
-    public View.OnClickListener getApplyButtonListener() {
-        return applyButtonListener;
-    }
-
-    @Override
-    public View.OnClickListener getCancelButtonListener() {
-        return cancelButtonListener;
-    }
-
-    private class ApplyButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if(responseHandlers != null) {
-                task.setLabel(viewControl.getTaskLabel());
-                responseHandlers.applyButtonHandler(taskDialogType, task);
-                responseHandlers = null;
-            } else {
-                Log.e(TASK_DIALOG_PRESENTER_LOG_TAG, "onApplyButtonCLick: no response handlers are passed");
-            }
-            viewControl.removeDialogView();
+    public void onApplyAction() {
+        if(responseHandlers != null) {
+            responseHandlers.applyButtonHandler(taskDialogViewModel.getDialogType(), taskDialogViewModel.getTaskData());
+            responseHandlers = null;
+        } else {
+            Log.e(TASK_DIALOG_PRESENTER_LOG_TAG, "onApplyButtonCLick: no response handlers are passed");
         }
+        viewControl.removeDialogView();
     }
 
-    private class CancelButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if(responseHandlers != null) {
-                responseHandlers.cancelButtonHandler(taskDialogType);
-                responseHandlers = null;
-            } else {
-                Log.e(TASK_DIALOG_PRESENTER_LOG_TAG, "onApplyButtonCLick: no response handlers are passed");
-            }
-            viewControl.removeDialogView();
+    public void onCancelAction() {
+        if(responseHandlers != null) {
+            responseHandlers.cancelButtonHandler(taskDialogViewModel.getDialogType());
+            responseHandlers = null;
+        } else {
+            Log.e(TASK_DIALOG_PRESENTER_LOG_TAG, "onApplyButtonCLick: no response handlers are passed");
         }
+        viewControl.removeDialogView();
     }
 }

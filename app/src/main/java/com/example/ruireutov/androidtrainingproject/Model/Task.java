@@ -1,9 +1,11 @@
 package com.example.ruireutov.androidtrainingproject.Model;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Task implements Parcelable{
+public class Task extends BaseObservable implements Parcelable{
     private final int id;
     private String label;
     private boolean status;
@@ -14,12 +16,27 @@ public class Task implements Parcelable{
         status = false;
     }
 
-    public int getId() { return id; }
-    public String getLabel() { return label; }
-    public void setLabel(String label) { this.label = label; }
-    public boolean isDone () { return status; }
-    public void setStatus(boolean isDone) { status = isDone; }
+    public int getId() {
+        return id;
+    }
 
+    @Bindable
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public boolean isDone () {
+        return status;
+    }
+    public void setStatus(boolean isDone) {
+        status = isDone;
+    }
+
+    //  Parcelable part
     @Override
     public int describeContents() {
         return 0;
@@ -32,7 +49,7 @@ public class Task implements Parcelable{
         dest.writeInt(this.status ? 1 : 0);
     }
 
-//  Parcelable part
+
     public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
         public Task createFromParcel(Parcel in) {
             return new Task(in);
