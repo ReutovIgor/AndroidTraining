@@ -9,14 +9,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.ruireutov.androidtrainingproject.Components.DaggerTaskDialogFragmentComponent;
 import com.example.ruireutov.androidtrainingproject.Components.TaskDialogFragmentComponent;
 import com.example.ruireutov.androidtrainingproject.MainApplication;
 import com.example.ruireutov.androidtrainingproject.Model.Task;
-import com.example.ruireutov.androidtrainingproject.Model.TaskDialogViewModel;
 import com.example.ruireutov.androidtrainingproject.Presenters.ITaskDialogPresenterControl;
 import com.example.ruireutov.androidtrainingproject.Presenters.TaskDialogPresenter;
 import com.example.ruireutov.androidtrainingproject.R;
@@ -36,14 +33,11 @@ public class TaskDialogView extends DialogFragment implements ITaskDialogViewCon
     public static final String ARGS_TASK_DIALOG_TYPE = "type";
     public static final String ARGS_TASK_DATA = "task";
 
-    private EditText taskName;
-    private Button applyButton;
     private ITaskDialogResponseHandlers handlers;
     private FragmentTaskDialogBinding binding;
 
     @Inject
     public ITaskDialogPresenterControl presenterControl;
-
 
     public interface ITaskDialogResponseHandlers {
         void applyButtonHandler(int type, Task task);
@@ -70,11 +64,6 @@ public class TaskDialogView extends DialogFragment implements ITaskDialogViewCon
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_dialog, container, false);
         View v = binding.getRoot();
 
-//        taskName = v.findViewById(R.id.text_task_dialog_description);
-        applyButton = v.findViewById(R.id.button_task_dialog_apply);
-//        applyButton.setOnClickListener(presenterControl.getApplyButtonListener());
-//        v.findViewById(R.id.button_task_dialog_cancel).setOnClickListener(presenterControl.getCancelButtonListener());
-
         presenterControl.setDialogArgs(getArguments());
         presenterControl.setDialogResponseHandlers(handlers);
 
@@ -88,32 +77,13 @@ public class TaskDialogView extends DialogFragment implements ITaskDialogViewCon
     }
 
     @Override
-    public String getTaskLabel() {
-        return taskName.getText().toString();
+    public void setTaskDialogHeader(int titleId) {
+        getDialog().setTitle(titleId);
     }
 
     @Override
-    public void setNewTaskDialogType() {
-        getDialog().setTitle(getString(R.string.task_dialog_description_title_create_task));
-        applyButton.setText(getString(R.string.task_dialog_button_create_task));
-    }
-
-    @Override
-    public void setUpdateTaskDialogType() {
-        getDialog().setTitle(getString(R.string.task_dialog_description_title_update_task));
-        applyButton.setText(getString(R.string.task_dialog_button_update_task));
-    }
-
-    @Override
-    public void setDeleteTaskDialogType() {
-        getDialog().setTitle(getString(R.string.task_dialog_description_title_delete_task));
-        applyButton.setText(getString(R.string.task_dialog_button_delete_task));
-    }
-
-    @Override
-    public void bindData(TaskDialogViewModel taskDialogViewModel) {
-        binding.setTaskData(taskDialogViewModel);
-        binding.setHandlers((TaskDialogPresenter)presenterControl);
+    public void bindData(TaskDialogPresenter taskDialogPresenter) {
+        binding.setTaskDialogModel(taskDialogPresenter);
     }
 
     @Override

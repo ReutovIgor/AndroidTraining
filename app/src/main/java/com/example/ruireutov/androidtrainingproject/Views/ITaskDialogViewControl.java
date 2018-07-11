@@ -1,14 +1,9 @@
 package com.example.ruireutov.androidtrainingproject.Views;
 
-import android.databinding.ObservableField;
-
-import com.example.ruireutov.androidtrainingproject.Model.TaskDialogViewModel;
+import com.example.ruireutov.androidtrainingproject.Presenters.TaskDialogPresenter;
 
 public interface ITaskDialogViewControl extends IView {
-    String getTaskLabel();
-    void setNewTaskDialogType();
-    void setUpdateTaskDialogType();
-    void setDeleteTaskDialogType();
-    void bindData (TaskDialogViewModel taskDialogViewModel);
+    void setTaskDialogHeader(int titleId);
+    void bindData (TaskDialogPresenter taskDialogPresenter);
     void removeDialogView();
 }

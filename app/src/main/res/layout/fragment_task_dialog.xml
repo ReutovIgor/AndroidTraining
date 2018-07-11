@@ -6,10 +6,7 @@
         <import type="android.text.InputType"/>
         <import type="com.example.ruireutov.androidtrainingproject.Views.TaskDialogView"/>
         <variable
-            name="taskData"
-            type="com.example.ruireutov.androidtrainingproject.Model.TaskDialogViewModel"/>
-        <variable
-            name="handlers"
+            name="taskDialogModel"
             type="com.example.ruireutov.androidtrainingproject.Presenters.TaskDialogPresenter"/>
     </data>
     <android.support.constraint.ConstraintLayout
@@ -22,11 +19,11 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="@{taskData.dialogType == TaskDialogView.DELETE_TASK_DIALOG ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
-            android:focusable="@{taskData.dialogType == TaskDialogView.DELETE_TASK_DIALOG ? false : true}"
-            android:selection="@{taskData.taskData.label.length()}"
-            android:hint="@string/task_dialog_edit_text_hint"
-            android:text="@={taskData.taskData.label}"/>
+            android:inputType="@{taskDialogModel.taskDialogType == TaskDialogView.DELETE_TASK_DIALOG ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
+            android:focusable="@{taskDialogModel.taskDialogType == TaskDialogView.DELETE_TASK_DIALOG ? false : true}"
+            android:text="@={taskDialogModel.task.label}"
+            android:selection="@{taskDialogModel.task.label.length()}"
+            android:hint="@string/task_dialog_edit_text_hint" />
         <Button
             android:id="@+id/button_task_dialog_apply"
             app:layout_constraintTop_toBottomOf="@id/text_task_dialog_description"
@@ -34,8 +31,8 @@
             app:layout_constraintRight_toLeftOf="@id/button_task_dialog_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> handlers.onApplyAction()}"
-            android:text="@string/task_dialog_button_create_task"/>
+            android:onClick="@{() -> taskDialogModel.onApplyAction()}"
+            android:text="@{taskDialogModel.applyButtonR}"/>
         <Button
             android:id="@+id/button_task_dialog_cancel"
             app:layout_constraintTop_toBottomOf="@id/text_task_dialog_description"
@@ -43,7 +40,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> handlers.onCancelAction()}"
+            android:onClick="@{() -> taskDialogModel.onCancelAction()}"
             android:text="@string/task_dialog_button_cancel"/>
     </android.support.constraint.ConstraintLayout>
 </layout>
